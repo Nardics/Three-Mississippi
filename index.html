@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<!-- Use the HTML and CSS you developed in module 01 to fill out this template.-->
+
+<head>
+  <meta charset=utf-8 />
+  <title>Rolling on the River</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <link rel='icon' href='https://newmapsplus.github.io/favicon.ico' type='image/x-icon' />
+
+  <!-- Add links to external css stylesheets. -->
+  <link rel='icon' href='https://newmapsplus.github.io/favicon.ico' type='image/x-icon' />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,900i" rel="stylesheet" />
+  <!-- Use the latest stable version @ leafletjs.com/download.html -->
+  <link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet" />
+
+
+  <style>
+    /* Add custom styles. */
+    body {
+      background-color:ivory;
+      font-family: 'Lato', Arial, sans-serif;
+      font-size: 100%;
+      font-weight: 300;
+    }
+
+    header,
+    section,
+    footer {
+      width: 80%;
+      margin: 10px auto;
+    }
+
+    h1 {
+      font-family: cursive;
+      font-size: 3em;
+      font-weight: 900;
+      letter-spacing: .04em;
+    }
+
+    h2 {
+      /* font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; */
+      font-size: 2em;
+      font-weight: 300;
+      letter-spacing: .04em;
+    }
+
+    p {
+      /* font-family: cursive; */
+      font-size: 1.1em;
+      line-height: 1.5em;
+    }
+
+    a {
+      color: #00312fcc;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    a:hover {
+      text-decoration: dotted;
+    }
+
+    ul {
+      /* font-family: cursive; */
+      padding-left: 20px;
+    }
+
+    li {
+      margin: 10px 0;
+    }
+
+    /* CSS for styles go here */
+    hr {
+      margin: 20px 0;
+      border: 0;
+      height: 1px;
+      background: #b6e411;
+    }
+
+    .caption {
+      margin: 0 0 60px 0;
+      display: ruby-base;
+      /* font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; */
+      font-size: 1.5em;
+    }
+
+    #map {
+      width: 100%;
+      height: 60vh;
+      border: 6px ridge #92a5bb;
+    }
+
+    /*Replacing map id with recommendations
+    #map {
+      width: 100%;
+      height: 540px;
+      margin:10px auto;
+      border: 12px dotted #6e9adb;
+
+    }*/
+
+    .highlight {
+      color: #16f06a;
+      font-weight: bold;
+    }
+
+    .img-fill {
+      width: 100%;
+      height: auto;
+      margin: 10px 0;
+    }
+
+    /* Use float property to make two-column layout */
+    .first-column {
+      float: left;
+      width: 49%;
+      padding-right: 2%;
+    }
+
+    .second-column {
+      float: left;
+      width: 49%;
+    }
+
+    /* Clear floats after columns */
+    .row::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+
+    @media screen and (max-width: 900px) {
+
+      .first-column,
+      .second-column {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <!-- Add header information -->
+    <h1> One, Two, Three Mississippi</h1>
+  </header>
+  <section>
+    <!-- Add map and body content -->
+    <!-- Start row -->
+    <div class="row">
+      <div id="map"></div>
+
+      <!-- Start left column -->
+      <div class="caption">
+        Three of the major cities along the Mississippi River.</div>
+      </ul>
+
+
+
+      <ul>
+        <li>See my projects on GitHub: <a href="https://nardics.github.io/Florida-Rescue/">New Maps Plus</a></li>
+        <li>Follow me on twitter: <a href="https://twitter.com/BajanTheNard">@BajanTheNard</a></li>
+
+      </ul>
+    </div>
+
+  </section>
+  <footer>
+    <!-- Add footer information -->
+    <a href="https://newmapsplus.github.io">
+      <img src="https://newmapsplus.github.io/assets/graphics/logo-2018-nmp-75px-h-gray.png"
+        alt="University of Kentucky New Maps Plus">
+    </a>
+
+    <a href="https://uky-gis.github.io">
+      <img src="https://newmapsplus.github.io/assets/graphics/logo-2018-geography-75px-h.png"
+        alt="University of Kentucky Department of Geography">
+    </a>
+      <!-- Add link to Leaflet JavaScript library. -->
+  <p>Click <a href="https://leafletjs.com/">HERE </a>for Link to Leafjet resource library.</p>
+  </footer>
+
+
+  <!-- Use the latest stable version @ leafletjs.com/download.html -->
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+
+  <!-- Starter Javascript -->
+  <script>
+    // Map options control initial location and zoom level.
+    var options = {
+      center: [36.63, -90.82],
+      zoom: 3.5
+    }
+
+    // Create Leaflet map with above options.
+    var map = L.map('map', options);
+
+    // Get basemap URL from Leaflet Providers
+    var basemap_url = 'https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}'
+
+    // Get basemap attributes from Leaflet Providers
+    var basemap_attributes = {
+      attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
+      subdomains: 'abcd',
+      minZoom: 1,
+      maxZoom: 16,
+      ext: 'png'
+    }
+
+    // Add tileset as a layer in our map. 
+    var tiles = L.tileLayer(basemap_url, basemap_attributes).addTo(map);
+
+    // Add tiles to our map
+    map.addLayer(tiles);
+
+    // ************************************************** //
+
+    // STORING DATA AS VARIABLES IN ARRAYS
+
+    // VARIABLES REFERINCING DATA VALUES FOR FIRST CITY
+
+
+
+    // arrays of data
+    var cities = [' Baton Rouge', ' Saint Paul', ' St Louis'];
+    coords = [
+      [30.26, -91.10], [44.95, -93.09], [38.62, -90.19]
+    ];
+    populations = [220236, 307695, 2905893],
+      capitals = [true, true, false]
+
+    for (var i = 0; i < cities.length; i++) {
+
+      // ADDING FIRST MARKER TO MAP
+
+      // creating a string of the Popup content
+      var city1Popup = `<b>${cities[i]}</b><br>
+                      <b>population</b>: ${populations[i].toLocaleString()}`;
+
+
+
+      // if city is a capital city
+      if (capitals[i]) { // no need to add comparison, since array elements are true or false
+        // concatenate a string to the existing string value
+        city1Popup += `<br>${cities[i]} is the capital city`;
+      }
+
+      // create the Leaflet marker using the coordinates
+      L.marker(coords[i])
+        .addTo(map) // add it to the map
+        .bindPopup(city1Popup); // bind the Popup
+    }
+    //
+
+
+
+  </script>
+
+</body>
+
+</html>
